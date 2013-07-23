@@ -1,18 +1,24 @@
-*.gem
-*.rbc
+.rvmrc
+.rspec
 .bundle
 .config
+
 coverage
-InstalledFiles
-lib/bundler/man
-pkg
-rdoc
-spec/reports
-test/tmp
-test/version_tmp
+vendor
+log
 tmp
+coverage
+spec/tmp
+spec/reports
+
+Gemfile.lock
 
 # YARD artifacts
 .yardoc
 _yardoc
 doc/
+
+*.gem
+*.rbc
+**.orig
+**.org
