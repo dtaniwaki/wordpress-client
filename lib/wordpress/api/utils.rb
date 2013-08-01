@@ -18,6 +18,9 @@ module Wordpress
         res = request(method, "/rest/v1#{path}", params, :bearer_token_request => true)
         if res
           json = MultiJson.load(res)
+          if json.nil? || json == ''
+            raise Wordpress::ResponseError
+          end
           if !json['error'].nil?
             raise Wordpress::ResponseError, json['message']
           end
