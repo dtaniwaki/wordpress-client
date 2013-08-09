@@ -28,9 +28,14 @@ Request Dump
         if options.delete(:bearer_token_request) && !access_token.nil?
           http.headers['Authorization'] = bearer_auth_header
         end
+        http.headers['Accept-Encoding'] = 'gzip,deflate'
         http.timeout = 10
       end
-      res = http.body_str
+      begin
+        res = Zlib::GzipReader.new(StringIO.new(http.body_str)).read
+      rescue Zlib::GzipFile::Error
+        res = http.body_str
+      end
       
       debug <<-EOS
 Response Dump

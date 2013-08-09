@@ -2,7 +2,7 @@ module Wordpress
   class Version
     MAJOR = 0 unless defined? Wordpress::Version::MAJOR
     MINOR = 0 unless defined? Wordpress::Version::MINOR
-    PATCH = 3 unless defined? Wordpress::Version::PATCH
+    PATCH = 5 unless defined? Wordpress::Version::PATCH
     PRE = nil unless defined? Wordpress::Version::PRE
 
     class << self
