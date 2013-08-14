@@ -6,7 +6,7 @@ module Wordpress
       include Wordpress::API::Utils
 
       def get_comments(site, params = {})
-        validate_params! params, [:context, :type, :status], :type => :search
+        validate_params! params, [:context, :type, :status], :search
         object_from_response Wordpress::CommentArray, "/sites/#{site}/comments", :get, :query => params
       end
 

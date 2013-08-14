@@ -6,7 +6,7 @@ module Wordpress
       include Wordpress::API::Utils
 
       def get_posts(site, params = {})
-        validate_params! params, [:context, :tag, :category, :type, :status, :sticky, :author, :search, :meta_key, :meta_value], :type => :search
+        validate_params! params, [:context, :tag, :category, :type, :status, :sticky, :author, :search, :meta_key, :meta_value], :search
         object_from_response Wordpress::PostArray, "/sites/#{site}/posts", :get, :query => params
       end
 
