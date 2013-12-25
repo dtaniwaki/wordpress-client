@@ -3,12 +3,10 @@ require 'wordpress/client'
 
 module Wordpress
   class << self
+    attr_writer :logger
+
     def client
       @client ||= Wordpress::Client.new
-    end
-
-    def client?
-      !!@client
     end
 
     def logger

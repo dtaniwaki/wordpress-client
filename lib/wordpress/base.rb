@@ -2,7 +2,8 @@ module Wordpress
   class Base
     extend Forwardable
 
-    def_delegators 'Wordpress.logger', :debug, :info, :warn, :error, :fatal
+    def_delegators 'Wordpress', :logger
+    def_delegators 'logger', :debug, :info, :warn, :error, :fatal
 
     class << self
       def attr_accessor(*args)
