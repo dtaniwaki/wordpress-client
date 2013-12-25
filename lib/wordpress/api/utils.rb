@@ -22,9 +22,11 @@ module Wordpress
             raise Wordpress::ResponseError
           end
           if !json['error'].nil?
-            raise Wordpress::ResponseError, json['message']
+            raise Wordpress::ResponseError, json
           end
           klass.new(json)
+        rescue MultiJson::LoadError => e
+          raise Wordpress::ResponseError, {'error' => e, 'message' => "Can not parse the response: #{res.inspect}"}
         end
       end
 
