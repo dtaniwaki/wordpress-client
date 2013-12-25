@@ -1,6 +1,15 @@
 require 'rubygems'
 require 'bundler/setup'
 
+if ENV["COVERAGE"]
+  require 'simplecov'
+  SimpleCov.start do
+    add_filter do |src|
+      src.filename !~ /#{File.join(root, 'lib')}\//
+    end
+  end
+end
+
 require 'wordpress-client'
 
 RSpec.configure do |config|
@@ -11,7 +20,3 @@ RSpec.configure do |config|
   end
 end
 
-require 'simplecov'
-SimpleCov.start do
-  add_group 'lib', 'lib'
-end if ENV["COVERAGE"]
