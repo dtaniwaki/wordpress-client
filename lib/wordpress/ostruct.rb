@@ -1,62 +1,50 @@
 require 'wordpress/base'
 
 module Wordpress
-  class OpenStruct < Wordpress::Base
+  class OpenStruct < Base
     def_delegators :@hash, :map, :each
 
-    def initialize(hash = {})
-      @hash = Hash[hash.map do |key, value|
-        key = key.to_s
-        unless respond_to?(key)
-          metaclass.send(:define_method, key, Proc.new do
-            v = @hash[key]
-            @hash[key] = (v.is_a?(Hash) ? Wordpress::OpenStruct.new(v) : v)
-          end)
-        end
-        unless respond_to?("#{key}=")
-          metaclass.send(:define_method, "#{key}=", Proc.new do |v|
-            @hash[key] = (v.is_a?(Hash) ? Wordpress::OpenStruct.new(v) : v)
-            @hash[key]
-          end)
-        end
-        [key, (value.is_a?(Hash) ? Wordpress::OpenStruct.new(value) : value)]
-      end]
+    def initialize(hash)
+      @hash = Hash[hash.map{ |k, v| [k.to_s, v] }]
     end
 
-=begin
     def respond_to_missing?(method_name, include_private = false)
-      method_name = method_name.to_s
-      @hash.include?(method_name) || super
+      key = method_name.to_s
+      @hash.include?(key) || super
     end
-=end
+
     def to_s
       "#<#{self.class.name} #{map { |k, v| "#{k}=#{v}" }.join(" ")}>"
     end
 
     def [](k)
-      send(k)
+      send(k.to_s)
     end
 
     def []=(k, v)
       send("#{k}=", v)
     end
 
+    def to_hash
+      @hash
+    end
+
     private
-=begin
+
     def method_missing(method_name, *args, &block)
       key = method_name.to_s
-      if key[-1] == '='
-        key = key[0..-2]
-        if @hash.include?(key)
-          v = args[0]
-          return @hash[key] = (v.is_a?(Hash) ? Wordpress::OpenStruct.new(v) : v)
-        end
-      else
-        v = @hash[key]
-        return @hash[key] = (v.is_a?(Hash) ? Wordpress::OpenStruct.new(v) : v)
+      key = key[-1] == '=' ? key[0...-1] : key
+      if @hash.include?(key)
+        metaclass.send(:define_method, key, Proc.new{
+          v = @hash[key]
+          v.is_a?(Hash) ? Wordpress::OpenStruct.new(v) : v
+        })
+        metaclass.send(:define_method, "#{key}=", Proc.new{ |v|
+          @hash[key] = v
+        })
+        return send(method_name, *args, &block)
       end
       super
     end
-=end
   end
 end

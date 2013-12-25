@@ -11,9 +11,9 @@ describe Wordpress::OpenStruct do
   it 'should not respond to unknown keys' do
     o = Wordpress::OpenStruct.new({})
     o.should_not respond_to :a
-    proc {
+    expect {
       o.a = 1
-    }.should raise_error(NoMethodError)
+    }.to raise_error(NoMethodError)
   end
 
   it 'should work with accessor' do
@@ -25,8 +25,8 @@ describe Wordpress::OpenStruct do
 
   it 'should parse hash recursively' do
     o = Wordpress::OpenStruct.new({:a => {:b => {:c => :d}}})
-    o.a.should be_an_instance_of(Wordpress::OpenStruct)
-    o.a.b.should be_an_instance_of(Wordpress::OpenStruct)
+    o.a.should be_an(Wordpress::OpenStruct)
+    o.a.b.should be_an(Wordpress::OpenStruct)
     o.a.b.c.should == :d
   end
 end
