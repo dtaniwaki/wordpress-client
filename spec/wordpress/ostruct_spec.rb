@@ -22,6 +22,16 @@ describe Wordpress::OpenStruct do
     o.a.should == 2
   end
 
+  it 'should work with []' do
+    o = Wordpress::OpenStruct.new({:a => 1})
+    o[:a].should == 1
+    o[:a] = 2
+    o[:a].should == 2
+    o['a'].should == 2
+    o['a'] = 3
+    o['a'].should == 3
+  end
+
   it 'should parse hash recursively' do
     o = Wordpress::OpenStruct.new({:a => {:b => {:c => :d}}})
     o.a.should be_an(Wordpress::OpenStruct)
@@ -34,5 +44,15 @@ describe Wordpress::OpenStruct do
     o.a.should == 1
     o.assign({:a => 2})
     o.a.should == 2
+  end
+
+  it 'should return custom string for to_s method' do
+    o = Wordpress::OpenStruct.new({:a => {:b => 1}})
+    o.to_s.should == "#<Wordpress::OpenStruct a=#<Wordpress::OpenStruct b=1>>"
+  end
+
+  it 'should return original hash' do
+    o = Wordpress::OpenStruct.new({:a => 1})
+    o.to_hash.should == {'a' => 1}
   end
 end

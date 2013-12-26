@@ -2,7 +2,7 @@ require 'wordpress/base'
 
 module Wordpress
   class OpenStruct < Base
-    def_delegators :@hash, :map, :each
+    def_delegators :@hash, :map, :each, :any?, :all?, :size
 
     def initialize(hash = {})
       assign(hash)
@@ -19,7 +19,7 @@ module Wordpress
     end
 
     def to_s
-      "#<#{self.class.name} #{map { |k, v| "#{k}=#{v}" }.join(" ")}>"
+      "#<#{self.class.name} #{@hash.keys.map{ |k| "#{k}=#{send(k).to_s}" }.join(" ")}>"
     end
 
     def [](k)
