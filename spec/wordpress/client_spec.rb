@@ -36,7 +36,7 @@ describe Wordpress::Client do
   end
 
   context "with bearer_token_request option" do
-    it "should call get request" do
+    it "should call get request with Authorization header" do
       req = Faraday::Request.new
       req.stub(:headers).and_return({})
       req.headers.should_receive(:[]=).with('Authorization', 'Bearer something').once
@@ -48,6 +48,19 @@ describe Wordpress::Client do
 
       request = Wordpress::Request.new(:get, 'url', {})
       client.access_token = 'something'
+      client.call(request, :bearer_token_request => true)
+    end
+
+    it "should call get request without Authorization header for no access_token" do
+      req = Faraday::Request.new
+      req.stub(:headers).and_return({})
+      req.headers.should_not_receive(:[]=).with('Authorization', 'Bearer something')
+      req.stub(:options).and_return({})
+      req.should_receive(:url).with(anything)
+      req.should_receive(:params=).with(anything)
+      Faraday::Connection.any_instance.should_receive(:get).and_yield(req).and_return(Faraday::Response.new)
+
+      request = Wordpress::Request.new(:get, 'url', {})
       client.call(request, :bearer_token_request => true)
     end
   end
