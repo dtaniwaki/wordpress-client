@@ -1,4 +1,4 @@
-require 'json'
+require 'multi_json'
 require 'wordpress/errors'
 require 'wordpress/ostruct'
 Dir.glob(File.expand_path('../../object/*.rb', __FILE__)) do |path|

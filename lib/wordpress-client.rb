@@ -1,4 +1,5 @@
 require 'logger'
+require 'wordpress/version'
 require 'wordpress/client'
 
 module Wordpress

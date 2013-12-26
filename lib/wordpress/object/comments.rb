@@ -1,4 +1,4 @@
-require_relative 'base'
+require_relative 'array'
 
 module Wordpress::Object
   class Comments < Array

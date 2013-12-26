@@ -1,9 +1,8 @@
+require 'faraday'
+require 'faraday_middleware/gzip'
 require 'wordpress/base'
 require 'wordpress/request'
 require 'wordpress/api'
-require 'faraday'
-require 'faraday_middleware/gzip'
-require 'multi_json'
 
 module Wordpress
   class Client < Base

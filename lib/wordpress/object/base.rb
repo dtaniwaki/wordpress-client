@@ -1,7 +1,7 @@
+require 'date'
 require 'wordpress/base'
 require 'wordpress/request'
 require 'wordpress/ostruct'
-require 'date'
 
 module Wordpress::Object
   class Base < Wordpress::Base
