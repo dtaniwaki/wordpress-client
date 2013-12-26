@@ -54,4 +54,4 @@ See the [contributing guide](https://github.com/dtaniwaki/wordpress-client/blob/
 
 ## Copyright
 
-Copyright (c) 2010-2013 Daisuke Taniwaki. See LICENSE for details.
+Copyright (c) 2013-2013 Daisuke Taniwaki. See [LICENSE](https://github.com/dtaniwaki/wordpress-client/blob/master/LICENSE) for details.
