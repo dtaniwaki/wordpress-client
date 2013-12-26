@@ -37,32 +37,32 @@ module Wordpress
 
       def get_likes(site, post_id, params = {})
         validate_params! params
-        object_from_response Wordpress::Ostruct.new, Wordpress::Request.new(:get, "/rest/v1/sites/#{site}/posts/#{post_id}/likes", params)
+        object_from_response Wordpress::OpenStruct.new, Wordpress::Request.new(:get, "/rest/v1/sites/#{site}/posts/#{post_id}/likes", params)
       end
 
       def create_like(site, post_id, params = {})
         validate_params! params
-        object_from_response Wordpress::Ostruct.new, Wordpress::Request.new(:post, "/rest/v1/sites/#{site}/posts/#{post_id}/likes/new", params)
+        object_from_response Wordpress::OpenStruct.new, Wordpress::Request.new(:post, "/rest/v1/sites/#{site}/posts/#{post_id}/likes/new", params)
       end
 
       def delete_like(site, post_id, params = {})
         validate_params! params
-        object_from_response Wordpress::Ostruct.new, Wordpress::Request.new(:post, "/rest/v1/sites/#{site}/posts/#{post_id}/likes/mine/delete", params)
+        object_from_response Wordpress::OpenStruct.new, Wordpress::Request.new(:post, "/rest/v1/sites/#{site}/posts/#{post_id}/likes/mine/delete", params)
       end
 
       def get_like_status(site, post_id, params = {})
         validate_params! params
-        object_from_response Wordpress::Ostruct.new, Wordpress::Request.new(:get, "/rest/v1/sites/#{site}/posts/#{post_id}/likes/mine", params)
+        object_from_response Wordpress::OpenStruct.new, Wordpress::Request.new(:get, "/rest/v1/sites/#{site}/posts/#{post_id}/likes/mine", params)
       end
 
       def get_reblog_status(site, post_id, params = {})
         validate_params! params
-        object_from_response Wordpress::Ostruct.new, Wordpress::Request.new(:get, "/rest/v1/sites/#{site}/posts/#{post_id}/reblogs/mine", params)
+        object_from_response Wordpress::OpenStruct.new, Wordpress::Request.new(:get, "/rest/v1/sites/#{site}/posts/#{post_id}/reblogs/mine", params)
       end
 
       def create_reblog(site, post_id, data, params = {})
         validate_params! params
-        object_from_response Wordpress::Ostruct.new, Wordpress::Request.new(:post, "/rest/v1/sites/#{site}/posts/#{post_id}/reblogs/new", params, data)
+        object_from_response Wordpress::OpenStruct.new, Wordpress::Request.new(:post, "/rest/v1/sites/#{site}/posts/#{post_id}/reblogs/new", params, data)
       end
     end
   end

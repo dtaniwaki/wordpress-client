@@ -4,12 +4,13 @@ module Wordpress
   class OpenStruct < Base
     def_delegators :@hash, :map, :each
 
-    def initialize(hash)
+    def initialize(hash = {})
       assign(hash)
     end
 
-    def assign(hash)
+    def assign(hash = {})
       @hash = Hash[hash.map{ |k, v| [k.to_s, v] }]
+      self
     end
 
     def respond_to_missing?(method_name, include_private = false)

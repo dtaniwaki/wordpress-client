@@ -12,7 +12,7 @@ module Wordpress
 
       def get_my_likes(params = {})
         validate_params! params
-        object_from_response Wordpress::Ostruct.new, Wordpress::Request.new(:get, "/rest/v1/me/likes", params)
+        object_from_response Wordpress::OpenStruct.new, Wordpress::Request.new(:get, "/rest/v1/me/likes", params)
       end
     end
   end
