@@ -9,7 +9,8 @@ module Wordpress::Object
 
       def attr_array(name, klass)
         name = name.to_s
-        @array_name = name
+        self.array_name = name
+        def_delegators name, 'each', 'map', 'select', 'reject', 'find', 'find_all', 'any?', 'all?', 'size'
         attr_parameter name, :as => lambda{ |client, array|
           (array || []).map{ |v|
             Wordpress::Object.const_get(klass).new(client, v)
