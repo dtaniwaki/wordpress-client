@@ -7,7 +7,7 @@ module Wordpress
 
       def get_site(site, params = {})
         validate_params! params
-        object_from_response Wordpress::Site, "/sites/#{site}", :get, :query => params
+        object_from_response Wordpress::Object::Site.new(self), Wordpress::Request.new(:get, "/rest/v1/sites/#{site}", params)
       end
     end
   end

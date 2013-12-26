@@ -37,4 +37,27 @@ describe Wordpress::Base do
       instance.should respond_to(:fatal)
     end
   end
+
+  describe "class_attribute" do
+
+    it "should define class attribute" do
+      klass1 = Class.new(Wordpress::Base) do
+        class_attribute :boo
+      end
+      klass1.boo = 1
+      klass2 = Class.new(klass1)
+      klass2.boo = 2
+      klass1.boo.should == 1
+      klass2.boo.should == 2
+    end
+
+    it "should define reader instance method to get the class attribute" do
+      klass1 = Class.new(Wordpress::Base) do
+        class_attribute :boo
+      end
+      klass1.boo = 1
+      klass1.boo.should == 1
+      klass1.new.boo.should == 1
+    end
+  end
 end

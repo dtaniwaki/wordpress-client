@@ -1,5 +1,4 @@
 module Wordpress
-  class Configuration < Hash
-
+  class Configuration
   end
 end

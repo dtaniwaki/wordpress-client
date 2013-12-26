@@ -2,17 +2,16 @@ require "spec_helper"
 require 'wordpress/ostruct'
 
 describe Wordpress::OpenStruct do
-  it 'should generate accessor method at initialization'  do
+  it 'should not respond to known keys' do
     o = Wordpress::OpenStruct.new({:a => 1})
     o.should respond_to :a
-    o.should_not respond_to :b
   end
 
   it 'should not respond to unknown keys' do
-    o = Wordpress::OpenStruct.new({})
-    o.should_not respond_to :a
+    o = Wordpress::OpenStruct.new({:a => 1})
+    o.should_not respond_to :b
     expect {
-      o.a = 1
+      o.b
     }.to raise_error(NoMethodError)
   end
 
@@ -28,5 +27,12 @@ describe Wordpress::OpenStruct do
     o.a.should be_an(Wordpress::OpenStruct)
     o.a.b.should be_an(Wordpress::OpenStruct)
     o.a.b.c.should == :d
+  end
+
+  it 'should assign hash' do
+    o = Wordpress::OpenStruct.new({:a => 1})
+    o.a.should == 1
+    o.assign({:a => 2})
+    o.a.should == 2
   end
 end

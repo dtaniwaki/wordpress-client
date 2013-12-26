@@ -7,12 +7,12 @@ module Wordpress
 
       def me(params = {})
         validate_params! params
-        object_from_response Wordpress::User, "/me", :get, :query => params
+        object_from_response Wordpress::Object::User.new(self), Wordpress::Request.new(:get, "/rest/v1/me", params)
       end
 
       def get_my_likes(params = {})
         validate_params! params
-        object_from_response Wordpress::LikeArray, "/me/likes", :get, :query => params
+        object_from_response Wordpress::Ostruct.new, Wordpress::Request.new(:get, "/rest/v1/me/likes", params)
       end
     end
   end

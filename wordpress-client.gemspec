@@ -16,9 +16,9 @@ Gem::Specification.new do |s|
   s.require_paths = ["lib"]
   s.license       = "MIT"
 
-  s.add_runtime_dependency 'curb', '~> 0.8.4'
-  s.add_runtime_dependency 'logger', '~> 1.2'
-  s.add_runtime_dependency 'multi_json', '~> 1.7'
+  s.add_runtime_dependency 'faraday', '~> 0.8.8'
+  s.add_runtime_dependency 'logger', '>= 1.2'
+  s.add_runtime_dependency 'multi_json', '>= 1.7'
 
   s.add_development_dependency 'rspec'
   s.add_development_dependency 'simplecov'

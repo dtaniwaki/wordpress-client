@@ -5,6 +5,10 @@ module Wordpress
     def_delegators :@hash, :map, :each
 
     def initialize(hash)
+      assign(hash)
+    end
+
+    def assign(hash)
       @hash = Hash[hash.map{ |k, v| [k.to_s, v] }]
     end
 

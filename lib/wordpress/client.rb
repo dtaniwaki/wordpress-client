@@ -1,49 +1,47 @@
 require 'wordpress/base'
+require 'wordpress/request'
 require 'wordpress/api'
-require 'curb'
+require 'faraday'
+require 'faraday_middleware/gzip'
+require 'multi_json'
 
 module Wordpress
-  class Client < Wordpress::Base
+  class Client < Base
     include Wordpress::API
 
     attr_accessor :access_token
-    attr_accessor :end_point => "https://public-api.wordpress.com/"
+
+    def initialize
+      @conn = Faraday.new do |faraday|
+        faraday.use Faraday::Response::Logger, logger
+        faraday.request :url_encoded
+        faraday.response :gzip
+        faraday.adapter Faraday.default_adapter
+      end
+    end
+
+    def call(request, options = {})
+      debug "Request: #{request}"
+
+      response = @conn.send(request.method) do |req|
+        req.url request.url
+        req.params = request.params
+        req.body = request.body.to_s
+        if options.delete(:bearer_token_request) && !access_token.nil?
+          req.headers['Authorization'] = bearer_auth_header
+        end
+        req.headers['Accept-Encoding'] = 'gzip,deflate'
+        req.headers['Content-Type'] = 'application/json'
+        req.options[:timeout] = 10
+        req.options[:open_timeout] = 5
+      end
+
+      debug "Response: #{response.body}"
+
+      response.body
+    end
 
     private
-
-    def request(method, path, params = {}, options = {})
-      query_params = params[:query] || {}
-      request_params = params[:request] || {}
-      uri = end_point + (end_point[-1] == '/' ? '' : '/') + path.sub(/^[\/]+/, '')
-      uri += "?#{query_params.map{ |k, v| "#{k}=#{v}" }.join('&')}" if !query_params.empty?
-
-      debug <<-EOS
-Request Dump
-  Method     : #{method}
-  Path       : #{uri}
-  Parameters : #{request_params.inspect}
-      EOS
-
-      http = Curl.send(method, uri, request_params) do |http|
-        if options.delete(:bearer_token_request) && !access_token.nil?
-          http.headers['Authorization'] = bearer_auth_header
-        end
-        http.headers['Accept-Encoding'] = 'gzip,deflate'
-        http.timeout = 10
-      end
-      begin
-        res = Zlib::GzipReader.new(StringIO.new(http.body_str)).read
-      rescue Zlib::GzipFile::Error
-        res = http.body_str
-      end
-      
-      debug <<-EOS
-Response Dump
-  Content     : #{res}
-      EOS
-
-      res
-    end
 
     def bearer_auth_header
       "Bearer #{access_token}"
