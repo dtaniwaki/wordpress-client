@@ -1,6 +1,7 @@
 require 'wordpress/api/me'
 require 'wordpress/api/sites'
 require 'wordpress/api/posts'
+require 'wordpress/api/comments'
 require 'wordpress/api/tests'
 
 module Wordpress
@@ -10,6 +11,7 @@ module Wordpress
         include Wordpress::API::Me
         include Wordpress::API::Sites
         include Wordpress::API::Posts
+        include Wordpress::API::Comments
         include Wordpress::API::Tests
       end
     end

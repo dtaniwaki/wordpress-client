@@ -27,7 +27,7 @@ module Wordpress
         req.url request.url
         req.params = request.params
         req.body = request.body.to_s
-        if options.delete(:bearer_token_request) && !access_token.nil?
+        if options[:bearer_token_request] && !bearer_auth_header.nil?
           req.headers['Authorization'] = bearer_auth_header
         end
         req.headers['Accept-Encoding'] = 'gzip,deflate'
@@ -44,7 +44,7 @@ module Wordpress
     private
 
     def bearer_auth_header
-      "Bearer #{access_token}"
+      access_token.nil? ? nil : "Bearer #{access_token}"
     end
   end
 end

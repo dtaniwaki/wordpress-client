@@ -6,12 +6,12 @@ module Wordpress
       include Wordpress::API::Utils
 
       def me(params = {})
-        validate_params! params
+        validate_params! params, default_keys
         object_from_response Wordpress::Object::User.new(self), Wordpress::Request.new(:get, "/rest/v1/me", params)
       end
 
       def get_my_likes(params = {})
-        validate_params! params
+        validate_params! params, default_keys
         object_from_response Wordpress::OpenStruct.new, Wordpress::Request.new(:get, "/rest/v1/me/likes", params)
       end
     end

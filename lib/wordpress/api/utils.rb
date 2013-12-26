@@ -26,11 +26,17 @@ module Wordpress
 
       private
 
-      def validate_params!(params, valid_keys = [], type = nil)
-        valid_keys += [:http_envelope, :pretty, :callback] if type != :test
-        valid_keys += [:number, :offset, :page, :order, :order_by, :after, :before] if type == :search
+      def default_keys
+        [:http_envelope, :pretty, :callback]
+      end
+
+      def search_keys
+        [:number, :offset, :page, :order, :order_by, :after, :before]
+      end
+
+      def validate_params!(params, valid_keys = [])
         params.keys.each do |key|
-          raise RuntimeError, "#{key} is not valid for this method." unless valid_keys.include?(key)
+          raise Wordpress::ArgumentError, "#{key} is not valid for this method." unless valid_keys.include?(key)
         end
       end
     end
