@@ -41,7 +41,7 @@ module Wordpress
       end
   
       def default_keys
-        [:http_envelope, :pretty, :callback].freeze
+        [:http_envelope, :pretty, :meta, :callback].freeze
       end
   
       def search_keys

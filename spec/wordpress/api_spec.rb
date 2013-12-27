@@ -21,6 +21,12 @@ describe Wordpress::API do
     'get_post_comments' => {:args => ['sitename', 1], :method => :get, :url => '/rest/v1/sites/sitename/posts/1/replies', :response => Wordpress::Object::Comments},
     'get_comment' => {:args => ['sitename', 1], :method => :get, :url => '/rest/v1/sites/sitename/comments/1', :response => Wordpress::Object::Comment},
     'get_test' => {:args => [1], :method => :get, :url => '/rest/v1/test/1', :response => Wordpress::Object::Test},
+    'get_category' => {:args => ['sitename', 'cat_name'], :method => :get, :url => '/rest/v1/sites/sitename/categories/slug:cat_name', :response => Wordpress::OpenStruct},
+    'get_tag' => {:args => ['sitename', 'tag_name'], :method => :get, :url => '/rest/v1/sites/sitename/tags/slug:tag_name', :response => Wordpress::OpenStruct},
+    'get_follow' => {:args => ['sitename'], :method => :get, :url => '/rest/v1/sites/sitename/follows/mine', :response => Wordpress::OpenStruct},
+    'freshly_pressed' => {:method => :get, :url => '/rest/v1/freshly-pressed', :response => Wordpress::OpenStruct},
+    'get_notifications' => {:method => :get, :url => '/rest/v1/notifications', :response => Wordpress::OpenStruct},
+    'get_notification' => {:args => [1], :method => :get, :url => '/rest/v1/notifications/1', :response => Wordpress::OpenStruct},
   }.each do |method, params|
     describe "\##{method}" do
       it "should return #{params[:response].name}" do
