@@ -4,9 +4,19 @@
 
 wordpress-client is a [Wordpress Rest API Wrapper](http://developer.wordpress.com/docs/api/).
 
-## Getting started
+## Requirements
 
-Add wordpress-client to your `Gemfile` and `bundle install`:
+I test with ruby 1.9.3 and 2.1. Other versions/VMs are untested but might work fine.
+
+## Installation
+
+To your system
+
+```ruby
+gem install wordpress-client
+```
+
+Or add wordpress-client to your `Gemfile` and `bundle install`:
 
 ```ruby
 gem 'wordpress-client'
@@ -14,25 +24,28 @@ gem 'wordpress-client'
 
 ## Usage
 
+Create new client
+
 ```ruby
 require 'wordpress-client'
 
-# Get user by access token
+# Shared client
 client = Wordpress.client
-client.access_token = 'YOUR_ACCESS_TOKEN' # if you have any
-user = client.me
-site = user.site
-posts = site.posts
 
-# Get posts of a specific domain without access token
+# New client
 client = Wordpress::Client.new
+```
+
+Call API without access token
+
+```ruby
+# Get posts of a specific domain without access token
 posts = client.get_posts('wordpress-site-domain')
 posts.each do |post|
   # Do something
 end
 
 # Get all the posts of a specific domain without access token
-client = Wordpress::Client.new
 page = 1
 loop do
   posts = client.get_posts('wordpress-site-domain', :page => page)
@@ -42,6 +55,16 @@ loop do
   break if posts.size == 0
   page += 1
 end
+```
+
+Call API with access token
+
+```ruby
+# Get user by access token
+client.access_token = 'YOUR_ACCESS_TOKEN' # if you have any
+user = client.me
+site = user.site
+posts = site.posts
 ```
 
 ## TODO
