@@ -15,7 +15,11 @@ module Wordpress
 
     def respond_to_missing?(method_name, include_private = false)
       key = method_name.to_s
-      @hash.include?(key) || super
+      if @hash.include?(key)
+        define_accessor(key)
+      else
+        super
+      end
     end
 
     def to_s
@@ -40,16 +44,21 @@ module Wordpress
       key = method_name.to_s
       key = key[-1] == '=' ? key[0...-1] : key
       if @hash.include?(key)
-        metaclass.send(:define_method, key, Proc.new{
-          v = @hash[key]
-          v.is_a?(Hash) ? Wordpress::OpenStruct.new(v) : v
-        })
-        metaclass.send(:define_method, "#{key}=", Proc.new{ |v|
-          @hash[key] = v
-        })
-        return send(method_name, *args, &block)
+        define_accessor(key)
+        send(method_name, *args, &block)
+      else
+        super
       end
-      super
+    end
+
+    def define_accessor(key)
+      metaclass.send(:define_method, key, Proc.new{
+        v = @hash[key]
+        v.is_a?(Hash) ? Wordpress::OpenStruct.new(v) : v
+      })
+      metaclass.send(:define_method, "#{key}=", Proc.new{ |v|
+        @hash[key] = v
+      })
     end
   end
 end
