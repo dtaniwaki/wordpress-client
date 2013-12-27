@@ -37,7 +37,9 @@ describe Wordpress::API do
 
       it "should raise error with invalid parameter" do
         expect {
-          obj = client.send(method, *params[:args], :invalid_key => 1)
+          args = [method, *params[:args]]
+          args << {:invalid_key => 1}
+          obj = client.send(*args)
         }.to raise_error(Wordpress::ArgumentError)
       end
     end
