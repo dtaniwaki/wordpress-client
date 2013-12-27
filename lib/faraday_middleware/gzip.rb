@@ -8,7 +8,7 @@ module FaradayMiddleware
       encoding = env[:response_headers]['content-encoding'].to_s.downcase
       case encoding
       when 'gzip'
-        env[:body] = Zlib::GzipReader.new(StringIO.new(env[:body]), encoding: 'ASCII-8BIT').read
+        env[:body] = Zlib::GzipReader.new(StringIO.new(env[:body]), :encoding => 'ASCII-8BIT').read
         env[:response_headers].delete('content-encoding')
       when 'deflate'
         env[:body] = Zlib::Inflate.inflate(env[:body])
