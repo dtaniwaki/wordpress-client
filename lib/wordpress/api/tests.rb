@@ -1,25 +1,11 @@
-require 'wordpress/api/utils'
+require "wordpress/object/test"
 
-module Wordpress
-  module API
-    module Tests
-      include Wordpress::API::Utils
+test_keys = [:id, :default_string, :default_int, :boolean_whitelist_defaults_to_false, :boolean_whitelist_defaults_to_true, :string_whitelist_defaults_to_foo, :url, :datetime]
 
-      def get_test(id, params = {})
-        validate_params! params, test_keys
-        object_from_response Wordpress::Object::Test.new(self), Wordpress::Request.new(:get, "/rest/v1/test/#{id}", params)
-      end
+register_api :get_test, :get, "/rest/v1/test/$id",
+  test_keys,
+  lambda{ |json| Wordpress::Object::Test.new(self, json) }
 
-      def post_test(id, params = {})
-        validate_params! params, test_keys
-        object_from_response Wordpress::Object::Test.new(self), Wordpress::Request.new(:post, "/rest/v1/test/#{id}",  params)
-      end
-
-      private
-
-      def test_keys
-        [:id, :default_string, :default_int, :boolean_whitelist_defaults_to_false, :boolean_whitelist_defaults_to_true, :string_whitelist_defaults_to_foo, :url, :datetime]
-      end
-    end
-  end
-end
+register_api :post_test, :post, "/rest/v1/test/$id",
+  test_keys,
+  lambda{ |json| Wordpress::Object::Test.new(self, json) }

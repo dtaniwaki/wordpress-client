@@ -25,7 +25,7 @@ describe Wordpress::API do
     describe "\##{method}" do
       it "should return #{params[:response].name}" do
         request = Wordpress::Request.new(params[:method], params[:url])
-        client.stub(:call).and_return('{}')
+        client.stub(:call).and_return({})
         client.should_receive(:call).with do |*args|
           req = args.shift
           req.method.should == request.method

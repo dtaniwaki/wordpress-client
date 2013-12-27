@@ -1,8 +1,10 @@
+require 'multi_json'
 require 'faraday'
 require 'faraday_middleware/gzip'
 require 'wordpress/base'
 require 'wordpress/request'
 require 'wordpress/api'
+require 'wordpress/errors'
 
 module Wordpress
   class Client < Base
@@ -35,9 +37,18 @@ module Wordpress
         req.options[:open_timeout] = 5
       end
 
-      debug "Response: #{response.body}"
+      begin
+        json = MultiJson.load(response.body)
+        if json.nil? || json == ''
+          raise Wordpress::ResponseError
+        end
+      rescue MultiJson::LoadError => e
+        raise Wordpress::ResponseError, {'error' => e, 'message' => "Can not parse the response: #{response.body.inspect}"}
+      end
 
-      response.body
+      debug "Response: #{json}"
+
+      json
     end
 
     private

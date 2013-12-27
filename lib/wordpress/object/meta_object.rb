@@ -24,7 +24,8 @@ module Wordpress::Object
     def reload
       if meta && meta.links && meta.links.self
         request = Wordpress::Request.new(:get, meta.links.self)
-        client.object_from_response(self, request)
+        json = client.call(request)
+        self.assign(json)
       end
     end
 
@@ -52,7 +53,8 @@ module Wordpress::Object
       if associated_object?(name)
         @cached_objects[name] ||= begin
           request = Wordpress::Request.new(:get, meta.links.send(name))
-          client.object_from_response(Wordpress::Object.const_get(meta_objects[name]).new(client), request)
+          json = client.call(request)
+          Wordpress::Object.const_get(meta_objects[name]).new(client, json)
         end
       else
         super

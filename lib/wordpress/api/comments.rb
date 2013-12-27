@@ -1,39 +1,26 @@
-require 'wordpress/api/utils'
+require "wordpress/object/comments"
+require "wordpress/object/comment"
 
-module Wordpress
-  module API
-    module Comments
-      include Wordpress::API::Utils
+register_api :get_comments, :get, "/rest/v1/sites/$site/comments",
+  [:context, :type, :status] + default_keys + search_keys,
+  lambda{ |json| Wordpress::Object::Comments.new(self, json) }
 
-      def get_comments(site, params = {})
-        validate_params! params, [:context, :type, :status] + default_keys + search_keys
-        object_from_response Wordpress::Object::Comments.new(self), Wordpress::Request.new(:get, "/rest/v1/sites/#{site}/comments", params)
-      end
+register_api :get_post_comments, :get, "/rest/v1/sites/$site/posts/$post_id/replies",
+  [:context] + default_keys,
+  lambda{ |json| Wordpress::Object::Comments.new(self, json) }
 
-      def get_post_comments(site, post_id, params = {})
-        validate_params! params, [:context] + default_keys
-        object_from_response Wordpress::Object::Comments.new(self), Wordpress::Request.new(:get, "/rest/v1/sites/#{site}/posts/#{post_id}/replies", params)
-      end
+register_api :get_comment, :get, "/rest/v1/sites/$site/comments/$comment_id",
+  [:context] + default_keys,
+  lambda{ |json| Wordpress::Object::Comment.new(self, json) }
 
-      def get_comment(site, comment_id, params = {})
-        validate_params! params, [:context] + default_keys
-        object_from_response Wordpress::Object::Comment.new(self), Wordpress::Request.new(:get, "/rest/v1/sites/#{site}/comments/#{comment_id}", params)
-      end
+register_api :update_comment, :post, "/rest/v1/sites/$site/comments/$comment_id",
+  [:context] + default_keys,
+  lambda{ |json| Wordpress::Object::Comment.new(self, json) }
 
-      def update_comment(site, comment_id, data, params = {})
-        validate_params! params, [:context] + default_keys
-        object_from_response Wordpress::Object::Comment.new(self), Wordpress::Request.new(:post, "/rest/v1/sites/#{site}/comments/#{comment_id}", params, data)
-      end
+register_api :create_comment, :post, "/rest/v1/sites/$site/comments/$site_id/replies/new",
+  [:context] + default_keys,
+  lambda{ |json| Wordpress::Object::Comment.new(self, json) }
 
-      def create_comment(site, post_id, data, params = {})
-        validate_params! params, [:context] + default_keys
-        object_from_response Wordpress::Object::Comment.new(self), Wordpress::Request.new(:post, "/rest/v1/sites/#{site}/posts/#{post_id}/replies/new", params, data)
-      end
-
-      def delete_comment(site, comment_id, params = {})
-        validate_params! params, [:context] + default_keys
-        object_from_response Wordpress::Object::Comment.new(self), Wordpress::Request.new(:post, "/rest/v1/sites/#{site}/comments/#{comment_id}/delete", params)
-      end
-    end
-  end
-end
+register_api :delete_comment, :post, "/rest/v1/sites/$site/comments/$comment_id/delete",
+  [:context] + default_keys,
+  lambda{ |json| Wordpress::Object::Comment.new(self, json) }

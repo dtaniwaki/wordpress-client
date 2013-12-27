@@ -16,6 +16,7 @@ describe Wordpress::Client do
       req.should_receive(:url).with(anything)
       req.should_receive(:params=).with(anything)
       Faraday::Connection.any_instance.should_receive(:get).and_yield(req).and_return(Faraday::Response.new)
+      Faraday::Response.any_instance.stub(:body).and_return('{}')
 
       request = Wordpress::Request.new(:get, 'url', {})
       client.call(request)
@@ -29,6 +30,7 @@ describe Wordpress::Client do
       req.should_receive(:params=).with(anything)
       req.should_receive(:body=).with(anything)
       Faraday::Connection.any_instance.should_receive(:post).and_yield(req).and_return(Faraday::Response.new)
+      Faraday::Response.any_instance.stub(:body).and_return('{}')
 
       request = Wordpress::Request.new(:post, 'url', {}, {})
       client.call(request)
@@ -45,6 +47,7 @@ describe Wordpress::Client do
       req.should_receive(:url).with(anything)
       req.should_receive(:params=).with(anything)
       Faraday::Connection.any_instance.should_receive(:get).and_yield(req).and_return(Faraday::Response.new)
+      Faraday::Response.any_instance.stub(:body).and_return('{}')
 
       request = Wordpress::Request.new(:get, 'url', {})
       client.access_token = 'something'
@@ -59,6 +62,7 @@ describe Wordpress::Client do
       req.should_receive(:url).with(anything)
       req.should_receive(:params=).with(anything)
       Faraday::Connection.any_instance.should_receive(:get).and_yield(req).and_return(Faraday::Response.new)
+      Faraday::Response.any_instance.stub(:body).and_return('{}')
 
       request = Wordpress::Request.new(:get, 'url', {})
       client.call(request, :bearer_token_request => true)

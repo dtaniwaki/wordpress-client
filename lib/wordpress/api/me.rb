@@ -1,19 +1,10 @@
-require 'wordpress/api/utils'
+require "wordpress/ostruct"
+require "wordpress/object/user"
 
-module Wordpress
-  module API
-    module Me
-      include Wordpress::API::Utils
+register_api :me, :get, "/rest/v1/me",
+  default_keys,
+  lambda{ |json| Wordpress::Object::User.new(self, json) }
 
-      def me(params = {})
-        validate_params! params, default_keys
-        object_from_response Wordpress::Object::User.new(self), Wordpress::Request.new(:get, "/rest/v1/me", params)
-      end
-
-      def get_my_likes(params = {})
-        validate_params! params, default_keys
-        object_from_response Wordpress::OpenStruct.new, Wordpress::Request.new(:get, "/rest/v1/me/likes", params)
-      end
-    end
-  end
-end
+register_api :get_my_likes, :get, "/rest/v1/me/likes",
+  default_keys,
+  lambda{ |json| Wordpress::OpenStruct.new(json) }

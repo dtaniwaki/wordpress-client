@@ -1,14 +1,5 @@
-require 'wordpress/api/utils'
+require "wordpress/object/site"
 
-module Wordpress
-  module API
-    module Sites
-      include Wordpress::API::Utils
-
-      def get_site(site, params = {})
-        validate_params! params, default_keys
-        object_from_response Wordpress::Object::Site.new(self), Wordpress::Request.new(:get, "/rest/v1/sites/#{site}", params)
-      end
-    end
-  end
-end
+register_api :get_site, :get, "/rest/v1/sites/$site",
+  default_keys,
+  lambda{ |json| Wordpress::Object::Site.new(self, json) }
