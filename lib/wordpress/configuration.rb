@@ -1,4 +1,6 @@
+require 'wordpress/ostruct'
+
 module Wordpress
-  class Configuration
+  class Configuration < OpenStruct
   end
 end

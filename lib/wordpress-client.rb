@@ -30,5 +30,14 @@ module Wordpress
     def logger
       @logger ||= Logger.new(STDOUT)
     end
+
+    def configure(&block)
+      block.call(configuration)
+      configuration
+    end
+
+    def configuration
+      @configuration ||= Configuration.new
+    end
   end
 end
