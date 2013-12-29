@@ -1,19 +1,20 @@
 require "wordpress/ostruct"
 
-register_api :create_follow, :post, "/rest/v1/sites/$site/follows/new",
-  [:context] + default_keys,
-  lambda{ |json|
-    Wordpress::OpenStruct.new(json)
-  }
+module Wordpress::API
+  module Follow
+    def create_follow(site, data, params = {})
+      validate_keys! params, [:context] + default_keys
+      exec_api(Wordpress::Request.new(:post, "/rest/v1/sites/#{site}/follows/new", params, data))
+    end
 
-register_api :delete_follow, :post, "/rest/v1/sites/$site/follows/mine/delete",
-  [:context] + default_keys,
-  lambda{ |json|
-    Wordpress::OpenStruct.new(json)
-  }
+    def delete_follow(site, data, params = {})
+      validate_keys! params, [:context] + default_keys
+      exec_api(Wordpress::Request.new(:post, "/rest/v1/sites/#{site}/follows/mine/delete", params, data))
+    end
 
-register_api :get_follow, :get, "/rest/v1/sites/$site/follows/mine",
-  [:context] + default_keys,
-  lambda{ |json|
-    Wordpress::OpenStruct.new(json)
-  }
+    def get_follow(site, params = {})
+      validate_keys! params, [:context] + default_keys
+      exec_api(Wordpress::Request.new(:get, "/rest/v1/sites/#{site}/follows/mine", params))
+    end
+  end
+end

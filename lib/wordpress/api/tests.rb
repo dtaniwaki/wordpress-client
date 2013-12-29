@@ -1,11 +1,25 @@
 require "wordpress/object/test"
 
-test_keys = [:id, :default_string, :default_int, :boolean_whitelist_defaults_to_false, :boolean_whitelist_defaults_to_true, :string_whitelist_defaults_to_foo, :url, :datetime]
+module Wordpress::API
+  module Tests
+    def get_test(id, params = {})
+      validate_keys! params, test_keys
+      exec_api(Wordpress::Request.new(:get, "/rest/v1/test/#{id}", params)) do |json|
+        Wordpress::Object::Test.new(self, json)
+      end
+    end
 
-register_api :get_test, :get, "/rest/v1/test/$id",
-  test_keys,
-  lambda{ |json| Wordpress::Object::Test.new(self, json) }
+    def post_test(id, data, params = {})
+      validate_keys! params, test_keys
+      exec_api(Wordpress::Request.new(:post, "/rest/v1/test/#{id}", params, data)) do |json|
+        Wordpress::Object::Test.new(self, json)
+      end
+    end
 
-register_api :post_test, :post, "/rest/v1/test/$id",
-  test_keys,
-  lambda{ |json| Wordpress::Object::Test.new(self, json) }
+    private
+
+    def test_keys
+      [:id, :default_string, :default_int, :boolean_whitelist_defaults_to_false, :boolean_whitelist_defaults_to_true, :string_whitelist_defaults_to_foo, :url, :datetime].freeze
+    end
+  end
+end

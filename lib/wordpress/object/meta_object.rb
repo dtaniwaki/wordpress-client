@@ -24,8 +24,9 @@ module Wordpress::Object
     def reload
       if meta && meta.links && meta.links.self
         request = Wordpress::Request.new(:get, meta.links.self)
-        json = client.call(request)
-        self.assign(json)
+        client.exec_api(request) do |json|
+          self.assign(json)
+        end
       end
     end
 

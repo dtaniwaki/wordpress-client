@@ -35,6 +35,26 @@ describe Wordpress::Client do
       request = Wordpress::Request.new(:post, 'url', {}, {})
       client.call(request)
     end
+
+    it "should raise error for null response" do
+      request = Wordpress::Request.new(:get, 'url', {}, {})
+      Faraday::Connection.any_instance.stub(:get).and_return(Faraday::Response.new)
+
+      Faraday::Response.any_instance.stub(:body).and_return('null')
+      expect {
+        client.call(request)
+      }.to raise_error(Wordpress::ResponseError)
+    end
+
+    it "should raise error for invalid response" do
+      request = Wordpress::Request.new(:get, 'url', {}, {})
+      Faraday::Connection.any_instance.stub(:get).and_return(Faraday::Response.new)
+
+      Faraday::Response.any_instance.stub(:body).and_return('/$%@#')
+      expect {
+        client.call(request)
+      }.to raise_error(Wordpress::ResponseError)
+    end
   end
 
   context "with bearer_token_request option" do

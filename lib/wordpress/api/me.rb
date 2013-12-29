@@ -1,10 +1,18 @@
 require "wordpress/ostruct"
 require "wordpress/object/user"
 
-register_api :me, :get, "/rest/v1/me",
-  default_keys,
-  lambda{ |json| Wordpress::Object::User.new(self, json) }
+module Wordpress::API
+  module Me
+    def me(params = {})
+      validate_keys! params, default_keys
+      exec_api(Wordpress::Request.new(:get, "/rest/v1/me", params)) do |json|
+        Wordpress::Object::User.new(self, json)
+      end
+    end
 
-register_api :get_my_likes, :get, "/rest/v1/me/likes",
-  default_keys,
-  lambda{ |json| Wordpress::OpenStruct.new(json) }
+    def get_my_likes(params = {})
+      validate_keys! params, default_keys
+      exec_api(Wordpress::Request.new(:get, "/rest/v1/me/likes", params))
+    end
+  end
+end

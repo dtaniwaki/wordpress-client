@@ -1,50 +1,45 @@
 require "wordpress/ostruct"
 
-register_api :get_category, :get, "/rest/v1/sites/$site/categories/slug:$category",
-  [:context] + default_keys,
-  lambda{ |json|
-    Wordpress::OpenStruct.new(json)
-  }
+module Wordpress::API
+  module Taxonomy
+    def get_category(site, slug, params = {})
+      validate_keys! params, [:context] + default_keys
+      exec_api(Wordpress::Request.new(:get, "/rest/v1/sites/#{site}/categories/slug:#{slug}", params))
+    end
 
-register_api :update_category, :post, "/rest/v1/sites/$site/categories/slug:$category",
-  [:context] + default_keys,
-  lambda{ |json|
-    Wordpress::OpenStruct.new(json)
-  }
-  
-register_api :get_tag, :get, "/rest/v1/sites/$site/tags/slug:$tag",
-  [:context] + default_keys,
-  lambda{ |json|
-    Wordpress::OpenStruct.new(json)
-  }
+    def update_category(site, slug, data, params = {})
+      validate_keys! params, [:context] + default_keys
+      exec_api(Wordpress::Request.new(:post, "/rest/v1/sites/#{site}/categories/slug:#{slug}", params, data))
+    end
 
-register_api :update_tag, :post, "/rest/v1/sites/$site/tags/slug:$tag",
-  [:context] + default_keys,
-  lambda{ |json|
-    Wordpress::OpenStruct.new(json)
-  }
+    def get_tag(site, slug, params = {})
+      validate_keys! params, [:context] + default_keys
+      exec_api(Wordpress::Request.new(:get, "/rest/v1/sites/#{site}/tags/slug:#{slug}", params))
+    end
 
-register_api :create_category, :post, "/rest/v1/sites/$site/categories/new",
-  [:context] + default_keys,
-  lambda{ |json|
-    Wordpress::OpenStruct.new(json)
-  }
+    def update_tag(site, slug, data, params = {})
+      validate_keys! params, [:context] + default_keys
+      exec_api(Wordpress::Request.new(:post, "/rest/v1/sites/#{site}/tags/slug:#{slug}", params, data))
+    end
 
-register_api :create_tag, :post, "/rest/v1/sites/$site/tags/new",
-  [:context] + default_keys,
-  lambda{ |json|
-    Wordpress::OpenStruct.new(json)
-  }
+    def create_category(site, data, params = {})
+      validate_keys! params, [:context] + default_keys
+      exec_api(Wordpress::Request.new(:post, "/rest/v1/sites/#{site}/categories/new", params, data))
+    end
 
-register_api :delete_category, :post, "/rest/v1/sites/$site/categories/slug:$category/delete",
-  [:context] + default_keys,
-  lambda{ |json|
-    Wordpress::OpenStruct.new(json)
-  }
+    def create_tag(site, data, params = {})
+      validate_keys! params, [:context] + default_keys
+      exec_api(Wordpress::Request.new(:post, "/rest/v1/sites/#{site}/tags/new", params, data))
+    end
 
-register_api :delete_tag, :post, "/rest/v1/sites/$site/tags/slug:$tag/delete",
-  [:context] + default_keys,
-  lambda{ |json|
-    Wordpress::OpenStruct.new(json)
-  }
+    def delete_category(site, slug, data, params = {})
+      validate_keys! params, [:context] + default_keys
+      exec_api(Wordpress::Request.new(:post, "/rest/v1/sites/#{site}/categories/slug:#{slug}/delete", params, data))
+    end
 
+    def delete_tag(site, slug, data, params = {})
+      validate_keys! params, [:context] + default_keys
+      exec_api(Wordpress::Request.new(:post, "/rest/v1/sites/#{site}/tags/slug:#{slug}/delete", params, data))
+    end
+  end
+end

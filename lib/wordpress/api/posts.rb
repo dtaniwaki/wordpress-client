@@ -2,50 +2,78 @@ require "wordpress/ostruct"
 require "wordpress/object/posts"
 require "wordpress/object/post"
 
-register_api :get_posts, :get, "/rest/v1/sites/$site/posts",
-  [:context, :tag, :category, :type, :status, :sticky, :author, :search, :meta_key, :meta_value] + default_keys + search_keys,
-  lambda{ |json| Wordpress::Object::Posts.new(self, json) }
+module Wordpress::API
+  module Posts
+    def get_posts(site, params = {})
+      validate_keys! params, [:context, :tag, :category, :type, :status, :sticky, :author, :search, :meta_key, :meta_value] + default_keys + search_keys
+      exec_api(Wordpress::Request.new(:get, "/rest/v1/sites/#{site}/posts", params)) do |json|
+        Wordpress::Object::Posts.new(self, json)
+      end
+    end
 
-register_api :get_post, :get, "/rest/v1/sites/$site/posts/$post_id",
-  [:context] + default_keys,
-  lambda{ |json| Wordpress::Object::Post.new(self, json) }
+    def get_post(site, post_id, params = {})
+      validate_keys! params, [:context] + default_keys
+      exec_api(Wordpress::Request.new(:get, "/rest/v1/sites/#{site}/posts/#{post_id}", params)) do |json|
+        Wordpress::Object::Post.new(self, json)
+      end
+    end
 
-register_api :update_post, :post, "/rest/v1/sites/$site/posts/$post_id",
-  [:context] + default_keys,
-  lambda{ |json| Wordpress::Object::Post.new(self, json) }
+    def update_post(site, post_id, data, params = {})
+      validate_keys! params, [:context] + default_keys
+      exec_api(Wordpress::Request.new(:post, "/rest/v1/sites/#{site}/posts/#{post_id}", params, data)) do |json|
+        Wordpress::Object::Post.new(self, json)
+      end
+    end
 
-register_api :get_post_by_slug, :get, "/rest/v1/sites/$site/posts/slug:$post_slug",
-  [:context] + default_keys,
-  lambda{ |json| Wordpress::Object::Post.new(self, json) }
+    def get_post_by_slug(site, slug, params = {})
+      validate_keys! params, [:context] + default_keys
+      exec_api(Wordpress::Request.new(:get, "/rest/v1/sites/#{site}/posts/slug:#{slug}", params)) do |json|
+        Wordpress::Object::Post.new(self, json)
+      end
+    end
 
-register_api :create_post, :post, "/rest/v1/sites/$site/posts/new",
-  [:context] + default_keys,
-  lambda{ |json| Wordpress::Object::Post.new(self, json) }
+    def create_post(site, data, params = {})
+      validate_keys! params, [:context] + default_keys
+      exec_api(Wordpress::Request.new(:post, "/rest/v1/sites/#{site}/posts/new", params, data)) do |json|
+        Wordpress::Object::Post.new(self, json)
+      end
+    end
 
-register_api :delete_post, :post, "/rest/v1/sites/$site/posts/$post_id/delete",
-  [:context] + default_keys,
-  lambda{ |json| Wordpress::Object::Post.new(self, json) }
+    def delete_post(site, post_id, data, params = {})
+      validate_keys! params, [:context] + default_keys
+      exec_api(Wordpress::Request.new(:post, "/rest/v1/sites/#{site}/posts/#{post_id}/delete", params, data)) do |json|
+        Wordpress::Object::Post.new(self, json)
+      end
+    end
 
-register_api :get_likes, :get, "/rest/v1/sites/$site/posts/$post_id/likes",
-  default_keys,
-  lambda{ |json| Wordpress::OpenStruct.new(json) }
+    def get_likes(site, post_id, params = {})
+      validate_keys! params, default_keys
+      exec_api(Wordpress::Request.new(:get, "/rest/v1/sites/#{site}/posts/#{post_id}/likes", params))
+    end
 
-register_api :create_like, :post, "/rest/v1/sites/$site/posts/$post_id/likes/new",
-  default_keys,
-  lambda{ |json| Wordpress::OpenStruct.new(json) }
+    def create_like(site, post_id, data, params = {})
+      validate_keys! params, default_keys
+      exec_api(Wordpress::Request.new(:post, "/rest/v1/sites/#{site}/posts/#{post_id}/likes/new", params, data))
+    end
 
-register_api :delete_like, :post, "/rest/v1/sites/$site/posts/$post_id/likes/mine/delete",
-  default_keys,
-  lambda{ |json| Wordpress::OpenStruct.new(json) }
+    def delete_like(site, post_id, data, params = {})
+      validate_keys! params, default_keys
+      exec_api(Wordpress::Request.new(:post, "/rest/v1/sites/#{site}/posts/#{post_id}/likes/mine/delete", params, data))
+    end
 
-register_api :get_like_status, :get, "/rest/v1/sites/$site/posts/$post_id/likes/mine",
-  default_keys,
-  lambda{ |json| Wordpress::OpenStruct.new(json) }
+    def get_like_status(site, post_id, params = {})
+      validate_keys! params, default_keys
+      exec_api(Wordpress::Request.new(:get, "/rest/v1/sites/#{site}/posts/#{post_id}/likes/mine", params))
+    end
 
-register_api :get_reblog_status, :get, "/rest/v1/sites/$site/posts/$post_id/reblogs/mine",
-  default_keys,
-  lambda{ |json| Wordpress::OpenStruct.new(json) }
+    def get_reblog_status(site, post_id, params = {})
+      validate_keys! params, default_keys
+      exec_api(Wordpress::Request.new(:get, "/rest/v1/sites/#{site}/posts/#{post_id}/reblogs/mine", params))
+    end
 
-register_api :create_reblog, :post, "/rest/v1/sites/$site/posts/$post_id/reblogs/new",
-  default_keys,
-  lambda{ |json| Wordpress::OpenStruct.new(json) }
+    def create_reblog(site, post_id, data, params = {})
+      validate_keys! params, default_keys
+      exec_api(Wordpress::Request.new(:post, "/rest/v1/sites/#{site}/posts/#{post_id}/reblogs/new", params, data))
+    end
+  end
+end
