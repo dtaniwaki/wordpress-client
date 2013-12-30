@@ -6,7 +6,7 @@ wordpress-client is a [Wordpress Rest API Wrapper](http://developer.wordpress.co
 
 ## Requirements
 
-I test with ruby 1.9.3 and 2.1. Other versions/VMs are untested but might work fine.
+I test with ruby 1.9.3 and 2.1.0. Other versions/VMs are untested but might work fine.
 
 ## Installation
 
@@ -68,8 +68,6 @@ posts = site.posts
 ```
 
 ## TODO
-- Complete spec test
-- Support all the apis
 - Support create/update/delete from Wordpress::Object
 - Add oauth method
 
