@@ -23,12 +23,12 @@ module Wordpress
     end
 
     def call(request, options = {})
-      debug "Request: #{request}"
+      debug "Request: #{request.inspect}"
 
       response = @conn.send(request.method) do |req|
         req.url request.url
         req.params = request.params
-        req.body = request.body.to_s
+        req.body = MultiJson.dump(request.body)
         if options[:bearer_token_request] && !bearer_auth_header.nil?
           req.headers['Authorization'] = bearer_auth_header
         end
