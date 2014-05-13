@@ -1,6 +1,6 @@
 # wordpress-client
 
-[![Gem Version](https://badge.fury.io/rb/wordpress-client.png)](https://rubygems.org/gems/wordpress-client) [![Build Status](https://travis-ci.org/dtaniwaki/wordpress-client.png)](https://travis-ci.org/dtaniwaki/wordpress-client)
+[![Gem Version](https://badge.fury.io/rb/wordpress-client.png)](https://rubygems.org/gems/wordpress-client) [![Build Status](https://travis-ci.org/dtaniwaki/wordpress-client.png)](https://travis-ci.org/dtaniwaki/wordpress-client) [![Coverage Status](https://coveralls.io/repos/dtaniwaki/wordpress-client/badge.png)](https://coveralls.io/r/dtaniwaki/wordpress-client)
 
 wordpress-client is a [Wordpress Rest API Wrapper](http://developer.wordpress.com/docs/api/).
 

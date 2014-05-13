@@ -1,14 +1,7 @@
 require 'rubygems'
 require 'bundler/setup'
-
-if ENV["COVERAGE"]
-  require 'simplecov'
-  SimpleCov.start do
-    add_filter do |src|
-      src.filename !~ /#{File.join(root, 'lib')}\//
-    end
-  end
-end
+require 'coveralls'
+Coveralls.wear!
 
 require 'wordpress-client'
 
